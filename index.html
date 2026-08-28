@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Adventní rezervace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a0821">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Advent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #1a0821;
+    overscroll-behavior: none;
+  }
+  #app {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #1a0821;
+  }
+  #loader {
+    position: fixed; inset: 0; z-index: 2;
+    background: #1a0821;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    transition: opacity .4s ease;
+  }
+  #loader.gone { opacity: 0; pointer-events: none; }
+  #loader .mark {
+    font-size: 38px; font-weight: 800; letter-spacing: -.02em; color: #cead85;
+  }
+  #loader .sub {
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #96809f;
+  }
+  #loader .spin {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid rgba(206,173,133,.25); border-top-color: #cead85;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { #loader .spin { animation-duration: 2.4s; } }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="mark">Advent</div>
+  <div class="spin"></div>
+  <div class="sub">otevírám rezervace</div>
+</div>
+
+<!-- Aplikace běží uvnitř rámu, takže Google nad ni nepřidá modrý pruh. -->
+<iframe
+  id="app"
+  title="Adventní rezervace"
+  src="https://script.google.com/macros/s/AKfycbym0wiq9NKsa7LVcFt92BXDIrK80cMH2t9PUY5dvL2vIs-eMvJbKTxGGUEUuUW8wVz1/exec"
+  allow="clipboard-write"></iframe>
+
+<script>
+  var frame = document.getElementById("app");
+  var loader = document.getElementById("loader");
+  function hide() {
+    loader.classList.add("gone");
+    setTimeout(function () { loader.style.display = "none"; }, 500);
+  }
+  frame.addEventListener("load", hide);
+  setTimeout(hide, 12000);
+
+  // Service worker — díky němu jde stránka nainstalovat jako aplikace.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () { /* nevadí */ });
+    });
+  }
+</script>
+</body>
+</html>
