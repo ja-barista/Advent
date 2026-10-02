@@ -2,86 +2,35 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
-<title>Adventní rezervace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1a0821">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Advent">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-180.png">
+<title>Adventní rezervace — Pražírna Hospodářský</title>
+<meta name="description" content="Rezervace limitované edice Adventní kávy, degustačních balení a dárkových krabiček z Pražírny Hospodářský.">
+<meta name="theme-color" content="#3d1356">
+<meta property="og:title" content="Adventní rezervace — Pražírna Hospodářský">
+<meta property="og:description" content="Limitovaná edice Adventní kávy. Rezervuj si ji do 31. 10.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233d1356'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23c9a266' font-family='serif'%3EA%3C/text%3E%3C/svg%3E">
 <style>
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    background: #1a0821;
-    overscroll-behavior: none;
-  }
-  #app {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
-    background: #1a0821;
-  }
-  #loader {
-    position: fixed; inset: 0; z-index: 2;
-    background: #1a0821;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 18px;
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    transition: opacity .4s ease;
-  }
-  #loader.gone { opacity: 0; pointer-events: none; }
-  #loader .mark {
-    font-size: 38px; font-weight: 800; letter-spacing: -.02em; color: #cead85;
-  }
-  #loader .sub {
-    font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #96809f;
-  }
-  #loader .spin {
-    width: 26px; height: 26px; border-radius: 50%;
-    border: 2px solid rgba(206,173,133,.25); border-top-color: #cead85;
-    animation: spin .8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { #loader .spin { animation-duration: 2.4s; } }
+  html,body{margin:0;padding:0;height:100%;background:#2a0d3c;overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;display:block}
+  #load{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        background:radial-gradient(120% 90% at 50% 0%,#6e2b8f 0%,#3d1356 55%,#2a0d3c 100%);
+        color:#e5c894;font:600 15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;letter-spacing:.14em;
+        text-transform:uppercase;transition:opacity .4s;z-index:2}
+  #load.off{opacity:0;pointer-events:none}
+  .ring{width:34px;height:34px;margin-top:18px;border:2px solid rgba(229,200,148,.28);border-top-color:#e5c894;
+        border-radius:50%;animation:spin .9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-
-<div id="loader">
-  <div class="mark">Advent</div>
-  <div class="spin"></div>
-  <div class="sub">otevírám rezervace</div>
-</div>
-
-<!-- Aplikace běží uvnitř rámu, takže Google nad ni nepřidá modrý pruh. -->
-<iframe
-  id="app"
-  title="Adventní rezervace"
-  src="https://script.google.com/macros/s/AKfycbym0wiq9NKsa7LVcFt92BXDIrK80cMH2t9PUY5dvL2vIs-eMvJbKTxGGUEUuUW8wVz1/exec"
+<div id="load">Adventní rezervace<div class="ring"></div></div>
+<iframe id="app" title="Adventní rezervace"
+  src="https://script.google.com/macros/s/AKfycbxupoKKU_zLlemBunniB6ZjSRVudZUNlrjdKAzNvhq8J4RhinOwGWrbzfUJjZjUNMmK/exec"
   allow="clipboard-write"></iframe>
-
 <script>
-  var frame = document.getElementById("app");
-  var loader = document.getElementById("loader");
-  function hide() {
-    loader.classList.add("gone");
-    setTimeout(function () { loader.style.display = "none"; }, 500);
-  }
-  frame.addEventListener("load", hide);
-  setTimeout(hide, 12000);
-
-  // Service worker — díky němu jde stránka nainstalovat jako aplikace.
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("sw.js").catch(function () { /* nevadí */ });
-    });
-  }
+  var f=document.getElementById('app'), l=document.getElementById('load');
+  f.addEventListener('load',function(){setTimeout(function(){l.className='off';},900);});
+  setTimeout(function(){l.className='off';},9000);
 </script>
 </body>
 </html>
